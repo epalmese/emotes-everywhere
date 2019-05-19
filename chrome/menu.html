@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="menu.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <h1>Emotes Everywhere</h1>
+  <div>
+    <label for="onswitch" class="nohighlight">OFF / ON</label>
+    <label id="ontoggle">
+      <input type="checkbox" id="onswitch">
+      <span class="slider"></span>
+      <span class="dot"></span>
+    </label>
+  </div>
+  <h2>Emotes:</h2>
+  <div>
+    <label for="manage" class="btn ppl">Manage Emotes</label>
+    <input type="button" id="manage" class="hide">
+  </div>
+  <h2>Help:</h2>
+  <div>
+    <div id="helplist">
+      <b>What kinds of images can I use as emotes?</b>
+      <p>Anything your browser can render (transparent PNGs, animated GIFs, etc.).</p>
+      <b>Which characters can be used in emote codes?</b>
+      <p>Any combination of letters, numbers, and colons (":") which traditionally wrap emotes. No spaces.</p>
+      <b>Why can't I see tooltips on some emotes?</b>
+      <p>The overflow is hidden on a parent element. Copy/paste the emote to get the code from its alt text.</p>
+      <b>Why doesn't this work on some sites?</b>
+      <p>Text in custom HTML tags won't be parsed. Additionally, altering page elements on sites that load new pages by retaining recycled elements from the current page can break those sites.</p>
+      <b>DISCLAIMER</b>
+      <p>This extension modifies the content of web pages client-side. While it is designed to be unobtrusive, these modifications may cause unintended side effects on some sites, and may render some sites unusable. The author of this extension accepts no liability for damages caused in whole or in part by the extension, which the user understands they are getting for free from a stranger on the internet.</p>
+    </div>
+    <b>What about ______?</b>
+    <p>I am always open to suggestions and if you find an error, you can tell me here:</p>
+    <p><a href="https://twitter.com/enricopalmese" target="_blank">&lt;insert contact information here&gt;</a></p>
+  </div>
+  <div id="modal" class="closed">
+    <label for="close" class="btn ppl wide">X</label>
+    <input type="button" id="close" class="hide">
+    <div class="inner">
+      <label for="import" class="btn ppl">Import Set</label>
+      <input type="file" id="import" class="hide" accept=".emotes">
+      <label for="export" class="btn ppl">Export Set</label>
+      <input type="button" id="export" class="hide">
+      <div id="feedback1" class="feedback"></div>
+      <div class="rule"></div>
+      <label for="add" class="btn ppl">Add/Search</label>
+      <input type="button" id="add" class="hide">
+      <div class="textform">
+        <div>Code: </div><input type="text" id="code" placeholder="ex: &quot;LULW&quot;">
+        <div>Image: </div><input type="text" id="src" placeholder="ex &quot;https://.../img.png&quot;">
+      </div>
+      <div id="feedback2" class="feedback"></div>
+      <span id="found" class="hide">
+        <img id="addedimg" src="">
+        <label for="del" class="btn red" title="remove">X</label>
+        <input type="button" id="del" class="hide">
+      </span>
+      <div class="rule"></div>
+      <label for="see" class="btn ppl">See All</label>
+      <input type="button" id="see" class="hide">
+      <div id="feedback3" class="feedback"></div>
+      <table id="alltable">
+        <tbody id="emotetable"></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="menu.js"></script>
+</body>
+
+</html>

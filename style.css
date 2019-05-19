@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 110%;
+    margin: 0;
+    line-height: 1.2;
+    word-wrap: break-word;
+    background: rgb(220, 220, 220);
+}
+#content {
+    box-sizing: border-box;
+    margin: 1em auto;
+    padding: 1em;
+    width: 50%;
+    min-width: 550px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    border-radius: 16px;
+}
+#footer {
+    font-size: 90%;
+    color: rgb(55, 55, 55);
+}
+@media screen and (max-width: 550px) {
+    #content {
+        width: 99%;
+        min-width: 300px;
+    }
+}
