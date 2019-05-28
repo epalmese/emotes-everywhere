@@ -1,0 +1,39 @@
+{
+    "manifest_version": 2,
+    "name": "Emotes Everywhere",
+    "version": "0.1",
+    "description": "See custom emotes on any site.",
+    "icons": {
+        "128": "icons/128.png"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "browser_action": {
+        "default_popup": "menu.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "exclude_globs": [
+                "*://*.youtube.com/*"
+            ],
+            "all_frames": true,
+            "run_at": "document_end",
+            "js": [
+                "content.js"
+            ],
+            "css": [
+                "content.css"
+            ]
+        }
+    ],
+    "applications": {
+      "gecko": {
+        "id": "emoteseverywhere@epalmese.github.io",
+        "strict_min_version": "42.0"
+      }
+    }
+}

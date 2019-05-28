@@ -1,0 +1,40 @@
+span.emote_wrapper {
+    position: relative;
+}
+span.emote_wrapper img.inserted_emote {
+    vertical-align: middle;
+    height: 2em;
+    display: inline-block;
+}
+span.emote_wrapper span.tooltiptext {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1;
+    font-weight: 400;
+    font-size: 12px;
+    background: rgb(15, 12, 20);
+    color: rgb(255, 255, 255);
+    padding: 6px;
+    border-radius: 2px;
+    text-align: center;
+    position: absolute;
+    display: table;
+    z-index: 1000;
+    bottom: 160%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    visibility: hidden;
+}
+span.emote_wrapper:hover span.tooltiptext {
+    visibility: visible;
+}
+span.emote_wrapper span.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(0, 0, 0) transparent transparent;
+}
