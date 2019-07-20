@@ -84,7 +84,7 @@ body {
 .wide {
     display: block;
 }
-#modal {
+.modal {
     position: fixed;
     z-index: 1;
     width: 90%;
@@ -95,7 +95,10 @@ body {
     border: 1px solid rgb(150, 150, 150);
     border-radius: 13px;
 }
-.closed {
+#modal.closed {
+    left: -50%;
+}
+#modal2.closed {
     left: 150%;
 }
 .opened {
@@ -124,16 +127,21 @@ img {
     max-height: 2em;
     max-width: 100px;
 }
-#alltable {
+.alltable {
     display: none;
     width: 100%;
     max-height: 120px;
     overflow-y: scroll;
     border: 1px solid rgb(192, 192, 192);
 }
+td {
+    word-break: break-all;
+}
 #emotetable td {
     width: 50%;
-    word-break: break-all;
+}
+#hosttable td {
+    width: 100%;
 }
 #helplist {
     margin: 1em 0;

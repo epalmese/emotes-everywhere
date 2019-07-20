@@ -15,10 +15,12 @@
       <span class="dot"></span>
     </label>
   </div>
-  <h2>Emotes:</h2>
+  <h2>Settings:</h2>
   <div>
-    <label for="manage" class="btn ppl">Manage Emotes</label>
+    <label for="manage" class="btn ppl">Emotes</label>
     <input type="button" id="manage" class="hide">
+    <label for="sites" class="btn ppl">Sitelist</label>
+    <input type="button" id="sites" class="hide">
   </div>
   <h2>Help:</h2>
   <div>
@@ -26,9 +28,9 @@
       <b>What kinds of images can I use as emotes?</b>
       <p>Anything your browser can render (transparent PNGs, animated GIFs, etc.).</p>
       <b>Which characters can be used in emote codes?</b>
-      <p>Any combination of letters, numbers, and colons (":") which traditionally wrap emotes. No spaces.</p>
+      <p>Any combination of letters, numbers, underscores ("_"), and colons (":") which traditionally wrap emotes. No spaces.</p>
       <b>Why can't I see tooltips on some emotes?</b>
-      <p>The overflow is hidden on a parent element. Copy/paste the emote to get the code from its alt text.</p>
+      <p>The overflow is hidden on a parent element. Highlight and copy/paste the emote to get the code from its alt text.</p>
       <b>Why doesn't this work on some sites?</b>
       <p>Text in custom HTML tags won't be parsed. Additionally, altering page elements on sites that load new pages by retaining recycled elements from the current page can break those sites.</p>
       <b>DISCLAIMER</b>
@@ -38,7 +40,7 @@
     <p>I am always open to suggestions and if you find an error, you can tell me here:</p>
     <p><a href="https://twitter.com/enricopalmese" target="_blank">&lt;insert contact information here&gt;</a></p>
   </div>
-  <div id="modal" class="closed">
+  <div id="modal" class="modal closed">
     <label for="close" class="btn ppl wide">X</label>
     <input type="button" id="close" class="hide">
     <div class="inner">
@@ -64,8 +66,24 @@
       <label for="see" class="btn ppl">See All</label>
       <input type="button" id="see" class="hide">
       <div id="feedback3" class="feedback"></div>
-      <table id="alltable">
+      <table id="alltable1" class="alltable">
         <tbody id="emotetable"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="modal2" class="modal closed">
+    <label for="close2" class="btn ppl wide">X</label>
+    <input type="button" id="close2" class="hide">
+    <div class="inner">
+      <label for="enable" class="btn ppl">Add this site</label>
+      <input type="button" id="enable" class="hide">
+      <div id="feedback4" class="feedback"></div>
+      <div class="rule"></div>
+      <label for="seesites" class="btn ppl">See All</label>
+      <input type="button" id="seesites" class="hide">
+      <div id="feedback5" class="feedback"></div>
+      <table id="alltable2" class="alltable">
+        <tbody id="hosttable"></tbody>
       </table>
     </div>
   </div>
