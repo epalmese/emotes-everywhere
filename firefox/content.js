@@ -36,6 +36,21 @@
         }
     });
 
+    var hostnames = []; //array for hostname objects
+    chrome.storage.sync.get(['HOSTS'], function(result) { //check for custom hostnames at page load
+        if (result.HOSTS == null) { //if no hostname set is saved
+            hostnames = [
+                "www.twitch.tv",
+                "www.reddit.com",
+                "twitter.com"
+            ]; //use default set
+            chrome.storage.sync.set({ HOSTS: hostnames }); //save default set
+        }
+        else { //if a hostname set is saved
+            hostnames = result.HOSTS; //used saved hostname set
+        }
+    });
+
     function substitute(nodes) { //substitutes text patterns in generally visible text elements with assigned inline images
         var elements = nodes.querySelectorAll("span:not(.emote_wrapper):not(.tooltiptext), div:not(.tw-tooltip), p, h1, h2, h3, h4, h5, h6, a, b, strong, em, i, th, td, li, blockquote");
         for (var i = 0; i < elements.length; i++) {
@@ -90,26 +105,52 @@
 
     chrome.storage.sync.get(['ON'], function(result) { //check if the extension is on at page load
         if (result.ON == 1) {
-            substitute(document.body); //initial substitutions
-            observer.observe(document.body, { //start checking
-                childList: true, subtree: true
-            });
+            var hn = window.location.hostname; //get hostname of frame
+            for (var i = 0; i < hostnames.length; i++) {
+                if (hn == hostnames[i]) { //if hostname included
+                    substitute(document.body); //initial substitutions
+                    observer.observe(document.body, { //start checking
+                        childList: true, subtree: true
+                    });
+                    break;
+                }
+            }
         }
     });
 
-    chrome.runtime.onMessage.addListener(function(request) { //react to on and off switching after page load
-        if (request.order == "stop") {
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) { //menu actions
+        if (request.order == "stop") { //switch extension off
             observer.disconnect(); //stop checking
         }
-        else if (request.order == "start") {
-            substitute(document.body); //activated substitution
-            observer.observe(document.body, { //start checking
-                childList: true, subtree: true
+        else if (request.order == "start") { //switch extension on
+            var hn = window.location.hostname; //get hostname of frame
+            for (var i = 0; i < hostnames.length; i++) {
+                if (hn == hostnames[i]) { //if hostname included
+                    substitute(document.body); //activated substitution
+                    observer.observe(document.body, { //start checking
+                        childList: true, subtree: true
+                    });
+                    break;
+                }
+            }
+        }
+        if (request.newemotes == "change") { //use new custom emotes set
+            chrome.storage.sync.get(['SET'], function(result) {
+                emotes = result.SET;
             });
         }
-        if (request.newemotes == "change") {
-            chrome.storage.sync.get(['SET'], function(result) { //use new custom emotes set
-                emotes = result.SET;
+        if (request.sitelist == "add") {
+            if (window.top == window.self) {
+                var hn = window.top.location.hostname; //get hostname of top frame
+                sendResponse({ hostname: hn });
+            }
+            chrome.storage.sync.get(['ON'], function(result) { //check if the extension is on
+                if (result.ON == 1) {
+                    substitute(document.body); //activated substitution
+                    observer.observe(document.body, { //start checking
+                        childList: true, subtree: true
+                    });
+                }
             });
         }
     });

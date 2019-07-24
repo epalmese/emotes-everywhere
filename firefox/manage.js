@@ -13,11 +13,7 @@
                         document.getElementById("feedback1").textContent = "Import successful.";
                         document.getElementById("feedback2").textContent = "";
                         document.getElementById("found").className = "hide";
-                    });
-                    chrome.tabs.query({}, function(tabs) {
-                        for (var i = 0; i < tabs.length; i++) {
-                            chrome.tabs.sendMessage(tabs[i].id, { newemotes: "change" }); //use changed emote set
-                        }
+                        setswap(); //use changed emote set
                     });
                 }
             }
@@ -53,7 +49,7 @@
     });
 
     document.getElementById("add").addEventListener('click', function() { //add emote to set
-        chrome.storage.sync.get(['SET'], function(result) { //check for custom emotes at page load
+        chrome.storage.sync.get(['SET'], function(result) { //check for custom emotes
             var emotes = result.SET;
             if (emotes == null) {
                 document.getElementById("feedback2").textContent = "No emote set to add to (default will be set on first webpage load).";
@@ -64,7 +60,7 @@
                     document.getElementById("feedback2").textContent = "No code given.";
                     document.getElementById("found").className = "hide";
                 }
-                else if (c.match("^[A-Za-z0-9:]+$")) {
+                else if (c.match("^[A-Za-z0-9:_]+$")) { //allowed characters
                     var found = false;
                     for (var i = 0; i < emotes.length; i++) {
                         if (c == emotes[i].code) {
@@ -89,11 +85,7 @@
                                 document.getElementById("addedimg").src = s;
                                 setremove(emotes, emotes.length - 1); //make button remove new emote
                                 document.getElementById("found").className = "show";
-                            });
-                            chrome.tabs.query({}, function(tabs) {
-                                for (var i = 0; i < tabs.length; i++) {
-                                    chrome.tabs.sendMessage(tabs[i].id, { newemotes: "change" }); //use changed emote set
-                                }
+                                setswap(); //use changed emote set
                             });
                         }
                     }
@@ -116,11 +108,19 @@
         }, false);
     }
 
+    function setswap() { //use changed emote set in current tabs
+        chrome.tabs.query({}, function(tabs) {
+            for (var i = 0; i < tabs.length; i++) {
+                chrome.tabs.sendMessage(tabs[i].id, { newemotes: "change" });
+            }
+        });
+    }
+
     document.getElementById("see").addEventListener('click', function() { //show table with all emotes
         chrome.storage.sync.get(['SET'], function(result) {
             var emotes = result.SET;
             var table = document.getElementById("emotetable");
-            document.getElementById("alltable").style.display = "block";
+            document.getElementById("alltable1").style.display = "block";
             while (table.firstChild) {
                 table.removeChild(table.firstChild); //clears emotes
             }
