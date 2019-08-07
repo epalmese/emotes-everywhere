@@ -103,18 +103,22 @@
         });
     });
 
+    function initiate() {
+        var hn = window.location.hostname; //get hostname of frame
+        for (var i = 0; i < hostnames.length; i++) {
+            if (hn == hostnames[i]) { //if hostname included
+                substitute(document.body); //activated substitution
+                observer.observe(document.body, { //start checking
+                    childList: true, subtree: true
+                });
+                break;
+            }
+        }
+    }
+
     chrome.storage.sync.get(['ON'], function(result) { //check if the extension is on at page load
         if (result.ON == 1) {
-            var hn = window.location.hostname; //get hostname of frame
-            for (var i = 0; i < hostnames.length; i++) {
-                if (hn == hostnames[i]) { //if hostname included
-                    substitute(document.body); //initial substitutions
-                    observer.observe(document.body, { //start checking
-                        childList: true, subtree: true
-                    });
-                    break;
-                }
-            }
+            initiate();
         }
     });
 
@@ -123,34 +127,52 @@
             observer.disconnect(); //stop checking
         }
         else if (request.order == "start") { //switch extension on
-            var hn = window.location.hostname; //get hostname of frame
-            for (var i = 0; i < hostnames.length; i++) {
-                if (hn == hostnames[i]) { //if hostname included
-                    substitute(document.body); //activated substitution
-                    observer.observe(document.body, { //start checking
-                        childList: true, subtree: true
-                    });
-                    break;
-                }
-            }
+            initiate();
         }
         if (request.newemotes == "change") { //use new custom emotes set
             chrome.storage.sync.get(['SET'], function(result) {
                 emotes = result.SET;
+                chrome.storage.sync.get(['ON'], function(result) {
+                    if (result.ON == 1) {
+                        var hn = window.location.hostname; //get hostname of frame
+                        for (var i = 0; i < hostnames.length; i++) {
+                            if (hn == hostnames[i]) { //if hostname included
+                                substitute(document.body); //activated substitution
+                                break;
+                            }
+                        }
+                    }
+                });
             });
         }
-        if (request.sitelist == "add") {
+        if (request.sitelist == "get") {
             if (window.top == window.self) {
                 var hn = window.top.location.hostname; //get hostname of top frame
                 sendResponse({ hostname: hn });
             }
-            chrome.storage.sync.get(['ON'], function(result) { //check if the extension is on
-                if (result.ON == 1) {
-                    substitute(document.body); //activated substitution
-                    observer.observe(document.body, { //start checking
-                        childList: true, subtree: true
-                    });
-                }
+        }
+        if (request.sitelist == "edit") {
+            chrome.storage.sync.get(['HOSTS'], function(result) {
+                hostnames = result.HOSTS;
+                chrome.storage.sync.get(['ON'], function(result) {
+                    if (result.ON == 1) {
+                        var hn = window.location.hostname; //get hostname of frame
+                        var found = false;
+                        for (var i = 0; i < hostnames.length; i++) {
+                            if (hn == hostnames[i]) { //if hostname included
+                                substitute(document.body); //activated substitution
+                                observer.observe(document.body, { //start checking
+                                    childList: true, subtree: true
+                                });
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found == false) {
+                            observer.disconnect();
+                        }
+                    }
+                });
             });
         }
     });

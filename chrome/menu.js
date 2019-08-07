@@ -12,9 +12,7 @@
 
     ONSWITCH.addEventListener('change', function() { //toggle extension on and off
         if (this.checked) {
-            chrome.storage.sync.set({ ON: 1 }, function() {
-                console.log("ON switched");
-            });
+            chrome.storage.sync.set({ ON: 1 });
             chrome.tabs.query({}, function(tabs) {
                 for (var i = 0; i < tabs.length; i++) {
                     chrome.tabs.sendMessage(tabs[i].id, { order: "start" }); //start emote insertions
@@ -22,9 +20,7 @@
             });
         }
         else {
-            chrome.storage.sync.set({ ON: 0 }, function() {
-                console.log("OFF switched");
-            });
+            chrome.storage.sync.set({ ON: 0 });
             chrome.tabs.query({}, function(tabs) {
                 for (var i = 0; i < tabs.length; i++) {
                     chrome.tabs.sendMessage(tabs[i].id, { order: "stop" }); //stop emote insertions
@@ -145,19 +141,11 @@
         rmvbtn.addEventListener('click', function rmv() {
             document.getElementById("found").className = "hide";
             s.splice(i, 1); //remove the emote at the given index from the given set
-            chrome.storage.sync.set({ SET: s }); //save the changed set
+            chrome.storage.sync.set({ SET: s }, function() { //save the changed set
+                setswap(); //use changed emote set
+            });
             document.getElementById("feedback2").textContent = "Emote removed.";
             rmvbtn.removeEventListener('click', rmv, false);
-        }, false);
-    }
-
-    function listremove(s, i, el) { //add functionality to the hostname delete button
-        el.addEventListener('click', function rmv() {
-            s.splice(i, 1); //remove the hostname at the given index from the given set
-            chrome.storage.sync.set({ HOSTS: s }, function() {
-                showhosts(); //update hostname table
-            }); //save the changed set
-            el.removeEventListener('click', rmv, false);
         }, false);
     }
 
@@ -200,10 +188,29 @@
         });
     });
 
+    function listremove(s, i, el) { //add functionality to the hostname delete button
+        el.addEventListener('click', function rmv() {
+            s.splice(i, 1); //remove the hostname at the given index from the given set
+            chrome.storage.sync.set({ HOSTS: s }, function() {
+                showhosts(); //update hostname table
+                listswap(); //use changed hostname set
+            }); //save the changed set
+            el.removeEventListener('click', rmv, false);
+        }, false);
+    }
+
+    function listswap() { //use changed hostname set in current tabs
+        chrome.tabs.query({}, function(tabs) {
+            for (var i = 0; i < tabs.length; i++) {
+                chrome.tabs.sendMessage(tabs[i].id, { sitelist: "edit" });
+            }
+        });
+    }
+
     document.getElementById("enable").addEventListener('click', function() { //add hostname of site in current tab to list
         chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
             try {
-                chrome.tabs.sendMessage(tabs[0].id, { sitelist: "add" }, function(response) { //enable for current site
+                chrome.tabs.sendMessage(tabs[0].id, { sitelist: "get" }, function(response) { //enable for current site
                     try {
                         var hn = response.hostname;
                         if (hn != "") { //if hostname is not blank
@@ -222,8 +229,9 @@
                                         }
                                     }
                                     if (found == false) {
-                                        hostnames.push(hn); //append new hostname to array for hostnames
+                                        hostnames.push(hn); //append new hostname to array for hostnames menu instance
                                         chrome.storage.sync.set({ HOSTS: hostnames }, function() {
+                                            listswap(); //use changed hostname set
                                             document.getElementById("feedback4").textContent = "\"" + hn + "\" added.";
                                         });
                                     }

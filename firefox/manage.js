@@ -102,7 +102,9 @@
         rmvbtn.addEventListener('click', function rmv() {
             document.getElementById("found").className = "hide";
             s.splice(i, 1); //remove the emote at the given index from the given set
-            chrome.storage.sync.set({ SET: s }); //save the changed set
+            chrome.storage.sync.set({ SET: s }, function() { //save the changed set
+                setswap(); //use changed emote set
+            });
             document.getElementById("feedback2").textContent = "Emote removed.";
             rmvbtn.removeEventListener('click', rmv, false);
         }, false);
