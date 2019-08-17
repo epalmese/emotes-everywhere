@@ -16,8 +16,9 @@ body {
     text-align: center;
     border-radius: 16px;
 }
-.logo {
+.icon {
     height: 2.5em;
+    margin: 0 0.5em;
 }
 #footer {
     font-size: 90%;
