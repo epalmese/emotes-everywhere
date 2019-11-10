@@ -24,6 +24,7 @@ span.emote_wrapper span.tooltiptext {
     transform: translateX(-50%);
     pointer-events: none;
     visibility: hidden;
+    word-break: normal;
 }
 span.emote_wrapper:hover span.tooltiptext {
     visibility: visible;
