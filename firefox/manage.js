@@ -13,6 +13,8 @@
                         document.getElementById("feedback1").textContent = "Import successful.";
                         document.getElementById("feedback2").textContent = "";
                         document.getElementById("found").className = "hide";
+                        document.getElementById("feedback3").textContent = "";
+                        document.getElementById("alltable1").style.display = "none";
                         setswap(); //use changed emote set
                     });
                 }
@@ -67,7 +69,7 @@
                             document.getElementById("feedback2").textContent = "Code already in use as:";
                             found = true;
                             document.getElementById("addedimg").src = emotes[i].src;
-                            setremove(emotes, i); //make button remove found emote
+                            setremove(c); //make button remove found emote
                             document.getElementById("found").className = "show";
                             break;
                         }
@@ -83,7 +85,7 @@
                             chrome.storage.sync.set({ SET: emotes }, function() { //set emote reference object array
                                 document.getElementById("feedback2").textContent = "Code added with image:";
                                 document.getElementById("addedimg").src = s;
-                                setremove(emotes, emotes.length - 1); //make button remove new emote
+                                setremove(c); //make button remove new emote
                                 document.getElementById("found").className = "show";
                                 setswap(); //use changed emote set
                             });
@@ -97,13 +99,24 @@
         });
     });
 
-    function setremove(s, i) { //add functionality to the emote delete button
+    function setremove(c) { //add functionality to the emote delete button
         var rmvbtn = document.getElementById("del");
         rmvbtn.addEventListener('click', function rmv() {
             document.getElementById("found").className = "hide";
-            s.splice(i, 1); //remove the emote at the given index from the given set
-            chrome.storage.sync.set({ SET: s }, function() { //save the changed set
-                setswap(); //use changed emote set
+            chrome.storage.sync.get(['SET'], function(result) { //check for custom emotes
+                var emotes = result.SET;
+                for (var i = 0; i < emotes.length; i++) {
+                    if (c == emotes[i].code) {
+                        emotes.splice(i, 1); //remove the emote at the given index from the given set
+                        chrome.storage.sync.set({ SET: emotes }, function() { //save the changed set
+                            if (document.getElementById("alltable1").style.display == "block") {
+                                showemotes(); //update emote table
+                            }
+                            setswap(); //use changed emote set
+                        });
+                        break;
+                    }
+                }
             });
             document.getElementById("feedback2").textContent = "Emote removed.";
             rmvbtn.removeEventListener('click', rmv, false);
@@ -118,7 +131,18 @@
         });
     }
 
-    document.getElementById("see").addEventListener('click', function() { //show table with all emotes
+    function listremove(s, i, el) { //add functionality to the emote delete buttons
+        el.addEventListener('click', function rmv() {
+            s.splice(i, 1); //remove the element at the given index from the given set
+            chrome.storage.sync.set({ SET: s }, function() {
+                showemotes(); //update emote table
+                setswap(); //use changed emote set
+            }); //save the changed set
+            el.removeEventListener('click', rmv, false);
+        }, false);
+    }
+
+    function showemotes() { //show table with all emotes
         chrome.storage.sync.get(['SET'], function(result) {
             var emotes = result.SET;
             var table = document.getElementById("emotetable");
@@ -142,10 +166,23 @@
                     img.src = emotes[i].src;
                     box.appendChild(img);
                     item.appendChild(box);
+                    box = document.createElement("td"); //table node
+                    var lbl = document.createElement("label"); //emote remove button label
+                    lbl.className = "btn red";
+                    lbl.title = "remove";
+                    lbl.textContent = "X";
+                    btn = document.createElement("input"); //emote remove button
+                    btn.type = "button";
+                    btn.className = "hide";
+                    listremove(emotes, i, btn); //make button remove adjacent emote
+                    lbl.appendChild(btn);
+                    box.appendChild(lbl);
+                    item.appendChild(box);
                     list.appendChild(item);
                 }
                 table.appendChild(list);
             }
         });
-    });
+    }
+    document.getElementById("see").addEventListener('click', showemotes);
 }());
