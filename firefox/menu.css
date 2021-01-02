@@ -9,7 +9,7 @@
     --greytext: rgb(242, 242, 242);
 }
 body {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans', 'Segoe UI', sans-serif;
     width: 250px;
     text-align: center;
     margin: 0;
@@ -104,8 +104,10 @@ body {
     border: 1px solid var(--bordergrey);
     border-radius: 13px;
 }
-#modal.closed {
-    left: -50%;
+#modal {
+    width: 60%;
+    min-width: 250px;
+    max-width: 850px;
 }
 #modal2.closed {
     left: 150%;
@@ -138,12 +140,21 @@ img {
 .alltable {
     display: none;
     width: 100%;
-    max-height: 120px;
     overflow-y: scroll;
     border: 1px solid var(--bordergrey);
 }
+#alltable1 {
+    max-height: 240px;
+}
+#alltable2 {
+    max-height: 120px;
+}
 td {
     word-break: break-all;
+}
+td img {
+    font-size: 150%;
+    height: 1.5em;
 }
 #emotetable td {
     width: 50%;

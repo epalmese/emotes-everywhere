@@ -1,58 +1,16 @@
 (function() {
     var emotes = []; //array for emote objects
-    chrome.storage.sync.get(['SET'], function(result) { //check for custom emotes at page load
-        if (result.SET == null) { //if no emote set is saved
-            emotes = [
-                { code: "LUL", src: "https://static-cdn.jtvnw.net/emoticons/v1/425618/2.0" },
-                { code: "LULW", src: "https://cdn.frankerfacez.com/emoticon/139407/1" },
-                { code: "OMEGALUL", src: "https://cdn.frankerfacez.com/emoticon/128054/1" },
-                { code: "Pog", src: "https://cdn.frankerfacez.com/emoticon/210748/1" },
-                { code: "PogChamp", src: "https://static-cdn.jtvnw.net/emoticons/v1/88/2.0" },
-                { code: "WeirdChamp", src: "https://cdn.frankerfacez.com/emoticon/262468/1" },
-                { code: "PogU", src: "https://cdn.frankerfacez.com/emoticon/256055/1" },
-                { code: "POGGERS", src: "https://cdn.frankerfacez.com/emoticon/214129/1" },
-                { code: "Pepega", src: "https://cdn.frankerfacez.com/emoticon/243789/1" },
-                { code: "PepeHands", src: "https://cdn.frankerfacez.com/emoticon/231552/1" },
-                { code: "PepeLaugh", src: "https://cdn.frankerfacez.com/emoticon/64785/1" },
-                { code: "pepeJAM", src: "https://cdn.betterttv.net/emote/5b77ac3af7bddc567b1d5fb2/1x" },
-                { code: "monkaS", src: "https://cdn.betterttv.net/emote/56e9f494fff3cc5c35e5287e/1x" },
-                { code: "FeelsBadMan", src: "https://cdn.betterttv.net/emote/566c9fc265dbbdab32ec053b/1x" },
-                { code: "FeelsGoodMan", src: "https://cdn.betterttv.net/emote/566c9fde65dbbdab32ec053e/1x" },
-                { code: "FeelsOkayMan", src: "https://cdn.frankerfacez.com/emoticon/145947/1" },
-                { code: "EZ", src: "https://cdn.betterttv.net/emote/5590b223b344e2c42a9e28e3/1x" },
-                { code: "AYAYA", src: "https://cdn.frankerfacez.com/emoticon/162146/1" },
-                { code: "4Head", src: "https://static-cdn.jtvnw.net/emoticons/v1/354/2.0" },
-                { code: "Kreygasm", src: "https://static-cdn.jtvnw.net/emoticons/v1/41/2.0" },
-                { code: "gachiBASS", src: "https://cdn.betterttv.net/emote/57719a9a6bdecd592c3ad59b/1x" },
-                { code: "gachiGASM", src: "https://cdn.betterttv.net/emote/55999813f0db38ef6c7c663e/1x" },
-                { code: "HandsUp", src: "https://cdn.frankerfacez.com/emoticon/229760/1" },
-                { code: "Clap", src: "https://cdn.betterttv.net/emote/55b6f480e66682f576dd94f5/2x" },
-                { code: "D:", src: "https://cdn.betterttv.net/emote/55028cd2135896936880fdd7/1x" }
-            ]; //use default set
-            chrome.storage.sync.set({ SET: emotes }); //save default set
-        }
-        else { //if an emote set is saved
-            emotes = result.SET; //used saved emote set
-        }
+    chrome.storage.sync.get(['SET'], function(result) { //get custom emotes at page load
+        emotes = result.SET; //used saved emote set
     });
 
     var hostnames = []; //array for hostname objects
-    chrome.storage.sync.get(['HOSTS'], function(result) { //check for custom hostnames at page load
-        if (result.HOSTS == null) { //if no hostname set is saved
-            hostnames = [
-                "www.twitch.tv",
-                "www.reddit.com",
-                "twitter.com"
-            ]; //use default set
-            chrome.storage.sync.set({ HOSTS: hostnames }); //save default set
-        }
-        else { //if a hostname set is saved
-            hostnames = result.HOSTS; //used saved hostname set
-        }
+    chrome.storage.sync.get(['HOSTS'], function(result) { //get custom hostnames at page load
+        hostnames = result.HOSTS; //used saved hostname set
     });
 
     function substitute(nodes) { //substitutes text patterns in generally visible text elements with assigned inline images
-        var elements = nodes.querySelectorAll("span:not(.emote_wrapper):not(.tooltiptext), div:not(.tw-tooltip), p, h1, h2, h3, h4, h5, h6, a, b, strong, em, i, th, td, li, blockquote");
+        var elements = nodes.querySelectorAll("span:not(.emote_wrapper):not(.tooltiptext), div:not(.tw-tooltip):not(.bttv-emote-tooltip):not(.ffz__tooltip--inner), p, h1, h2, h3, h4, h5, h6, a, b, strong, em, i, th, td, li, blockquote");
         for (var i = 0; i < elements.length; i++) {
             for (var j = 0; j < elements[i].childNodes.length; j++) {
                 var node = elements[i].childNodes[j];
@@ -122,6 +80,11 @@
         }
     });
 
+    var target = null;
+    document.addEventListener("contextmenu", function(event) {
+        target = event.target;
+    });
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) { //menu actions
         if (request.order == "stop") { //switch extension off
             observer.disconnect(); //stop checking
@@ -174,6 +137,11 @@
                     }
                 });
             });
+        }
+        if (request.context == "add") {
+            if (typeof target.alt !== "undefined") {
+                sendResponse({ alt: target.alt, src: target.src });
+            }
         }
     });
 }());

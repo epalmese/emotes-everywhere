@@ -30,3 +30,18 @@ body {
         min-width: 300px;
     }
 }
+@media (prefers-color-scheme: dark) {
+    body {
+        background: rgb(0, 0, 0);
+        color: rgb(240, 240, 240);
+    }
+    #content {
+        background-color: rgb(32, 32, 32);
+    }
+    a {
+        color: rgb(108, 156, 255);
+    }
+    #footer {
+        color: rgb(145, 145, 145);
+    }
+}

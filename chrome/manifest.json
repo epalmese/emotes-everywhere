@@ -1,13 +1,14 @@
 {
     "manifest_version": 2,
     "name": "Emotes Everywhere",
-    "version": "0.2.3",
+    "version": "0.3",
     "description": "See custom emotes on any site.",
     "icons": {
         "128": "icons/128.png"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "contextMenus"
     ],
     "browser_action": {
         "default_popup": "menu.html"
@@ -26,5 +27,11 @@
                 "content.css"
             ]
         }
-    ]
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    }
 }

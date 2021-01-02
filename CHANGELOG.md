@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.3
+- Images can be added as emotes from the context menu (by right-clicking) on some sites.
+- Tooltip text in popular related extensions will not be replaced with emotes.
+- The emote menu in the FireFox version makes better use of browser window space.
+
 ### 0.2.3
 - Users can remove emotes from the list of all emotes, instead of only from search.
 - Extension menus appear in dark mode if a "dark" browser color scheme is detected.

@@ -9,7 +9,7 @@
     --greytext: rgb(242, 242, 242);
 }
 body {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans', 'Segoe UI', sans-serif;
     width: 250px;
     text-align: center;
     margin: 0;
