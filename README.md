@@ -6,5 +6,4 @@ The source code for [Emotes Everywhere](https://epalmese.github.io/emotes-everyw
 
 #### Browser Differences
 
-**Chrome/Edge**: All settings are handled in the popup menu.  
-**Firefox**: Emote settings are handled on an options page, because opening a file dialog to import closes the popup menu.
+As of version 0.3.1, implementation differences between **Chrome/Edge** and **Firefox** versions are resolved. See [changelog](CHANGELOG.md) for details.

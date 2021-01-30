@@ -29,14 +29,14 @@
         }
     });
 
-    document.getElementById("manage").addEventListener('click', function() { //show settings menu
+    document.getElementById("manage").addEventListener('click', function() { //show emote settings menu
         window.open(chrome.runtime.getURL('manage.html'));
     });
     document.getElementById("sites").addEventListener('click', function() { //show hostname settings menu
-        document.getElementById("modal2").className = "modal opened";
+        document.getElementById("modal").className = "modal opened";
     });
     document.getElementById("close2").addEventListener('click', function() { //hide hostname settings menu
-        document.getElementById("modal2").className = "modal closed";
+        document.getElementById("modal").className = "modal closed";
     });
 
     function listremove(s, i, el) { //add functionality to the hostname delete button

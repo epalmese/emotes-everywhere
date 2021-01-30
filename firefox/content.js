@@ -1,6 +1,6 @@
 (function() {
     var emotes = []; //array for emote objects
-    chrome.storage.sync.get(['SET'], function(result) { //get custom emotes at page load
+    chrome.storage.local.get(['SET'], function(result) { //get custom emotes at page load
         emotes = result.SET; //used saved emote set
     });
 
@@ -93,7 +93,7 @@
             initiate();
         }
         if (request.newemotes == "change") { //use new custom emotes set
-            chrome.storage.sync.get(['SET'], function(result) {
+            chrome.storage.local.get(['SET'], function(result) {
                 emotes = result.SET;
                 chrome.storage.sync.get(['ON'], function(result) {
                     if (result.ON == 1) {

@@ -1,7 +1,7 @@
 (function() {
     chrome.runtime.onInstalled.addListener(function(details) {
         if (details.reason == "install") {
-            chrome.storage.sync.get(['SET'], function(result) { //check for custom emotes at install
+            chrome.storage.local.get(['SET'], function(result) { //check for custom emotes at install
                 if (result.SET == null) { //if no emote set is saved
                     var emotes = [
                         { code: "LUL", src: "https://static-cdn.jtvnw.net/emoticons/v1/425618/2.0" },
@@ -9,7 +9,6 @@
                         { code: "OMEGALUL", src: "https://cdn.frankerfacez.com/emoticon/128054/1" },
                         { code: "Pog", src: "https://cdn.frankerfacez.com/emoticon/210748/1" },
                         { code: "PogU", src: "https://cdn.frankerfacez.com/emoticon/256055/1" },
-                        { code: "PogChamp", src: "https://static-cdn.jtvnw.net/emoticons/v1/88/2.0" },
                         { code: "WeirdChamp", src: "https://cdn.frankerfacez.com/emoticon/262468/1" },
                         { code: "POGGERS", src: "https://cdn.frankerfacez.com/emoticon/214129/1" },
                         { code: "Pepega", src: "https://cdn.frankerfacez.com/emoticon/243789/1" },
@@ -32,10 +31,11 @@
                         { code: "forsenCD", src: "https://cdn.frankerfacez.com/emote/249060/1" },
                         { code: "4Head", src: "https://static-cdn.jtvnw.net/emoticons/v1/354/2.0" },
                         { code: "5Head", src: "https://cdn.frankerfacez.com/emote/239504/1" },
+                        { code: "KKonaW", src: "https://cdn.betterttv.net/frankerfacez_emote/164480/1" },
                         { code: "Clap", src: "https://cdn.betterttv.net/emote/55b6f480e66682f576dd94f5/2x" },
                         { code: "D:", src: "https://cdn.betterttv.net/emote/55028cd2135896936880fdd7/1x" }
-                    ]; //use default set
-                    chrome.storage.sync.set({ SET: emotes }); //save default set
+                    ];
+                    chrome.storage.local.set({ SET: emotes }); //save default set
                 }
             });
             chrome.storage.sync.get(['HOSTS'], function(result) { //check for custom hostnames at install
@@ -45,19 +45,19 @@
                         "www.reddit.com",
                         "twitter.com",
                         "clips.twitch.tv"
-                    ]; //use default set
+                    ];
                     chrome.storage.sync.set({ HOSTS: hostnames }); //save default set
                 }
             });
         }
+    });
 
-        chrome.contextMenus.removeAll();
-        chrome.contextMenus.create({ //add an option to the context menu
-            title: "Add to Emotes Everywhere",
-            id: "imagetoemote",
-            contexts: ["image"],
-            documentUrlPatterns: ["https://*.twitch.tv/*"] //sites the context menu option will appear on
-        });
+    chrome.contextMenus.removeAll();
+    chrome.contextMenus.create({ //add an option to the context menu
+        title: "Add to Emotes Everywhere",
+        id: "imagetoemote",
+        contexts: ["image"],
+        documentUrlPatterns: ["https://*.twitch.tv/*"] //sites the context menu option will appear on
     });
 
     chrome.contextMenus.onClicked.addListener(function(info, tab) {
@@ -66,7 +66,7 @@
                 var src = target.src;
                 var alt = target.alt;
                 if (alt.match("^[A-Za-z0-9:_]+$")) {
-                    chrome.storage.sync.get(['SET'], function(result) { //check for custom emotes
+                    chrome.storage.local.get(['SET'], function(result) { //check for custom emotes
                         var emotes = result.SET;
                         var found = false;
                         for (var i = 0; i < emotes.length; i++) {
@@ -79,7 +79,7 @@
                         if (found == false) {
                             emotes.push({ code: alt, src: src }); //add
                         }
-                        chrome.storage.sync.set({ SET: emotes }, function() { //save the changed set
+                        chrome.storage.local.set({ SET: emotes }, function() { //save the changed set
                             chrome.tabs.query({}, function(tabs) { //use changed emote set in current tabs
                                 for (var i = 0; i < tabs.length; i++) {
                                     chrome.tabs.sendMessage(tabs[i].id, { newemotes: "change" });

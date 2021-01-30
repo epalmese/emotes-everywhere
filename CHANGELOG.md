@@ -1,9 +1,14 @@
 ## Changelog
 
+### 0.3.1
+- Emote list storage is now local only, to remove the 8kb size limit (lists can still be exported and shared).
+- The emote menu in the Chrome/Edge version has been moved to it's own page, as in the Firefox version.
+- Implementation is now browser-agnostic. Chrome/Edge and Firefox versions share source code (only "manifest.json" differs).
+
 ### 0.3
 - Images can be added as emotes from the context menu (by right-clicking) on some sites.
 - Tooltip text in popular related extensions will not be replaced with emotes.
-- The emote menu in the FireFox version makes better use of browser window space.
+- The emote menu in the Firefox version makes better use of browser window space.
 
 ### 0.2.3
 - Users can remove emotes from the list of all emotes, instead of only from search.
