@@ -50,9 +50,6 @@ body {
 .red:active {
     background-color: rgb(255, 10, 10);
 }
-.wide {
-    display: block;
-}
 .modal {
     margin: auto;
     width: 60%;
@@ -64,6 +61,15 @@ body {
     border: 1px solid var(--bordergrey);
     border-radius: 13px;
 }
+.tool {
+    width: 1.5em;
+}
+.l {
+    float: left;
+}
+.r {
+    float: right;
+}
 .inner {
     margin: 1.5em;
 }
@@ -74,6 +80,14 @@ body {
 }
 .feedback {
     margin-top: 1em;
+}
+.help {
+    font-size: 1.1em;
+    max-width: 60%;
+    margin: 1em auto 2em;
+}
+.hl {
+    color: var(--purple1);
 }
 .textform {
     margin: 1em;

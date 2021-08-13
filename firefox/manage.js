@@ -3,6 +3,13 @@
         window.close();
     });
 
+    document.getElementById("hints").addEventListener('click', function() { //show menu usage information
+        var matches = document.querySelectorAll(".help");
+        for (var i = 0; i < matches.length; i++) {
+            matches[i].classList.remove("hide");
+        }
+    });
+
     document.getElementById("import").addEventListener('change', function(event) { //import emote set file
         var reader = new FileReader();
         reader.onload = function() {

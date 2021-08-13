@@ -31,7 +31,7 @@
                         { code: "forsenCD", src: "https://cdn.frankerfacez.com/emote/249060/1" },
                         { code: "4Head", src: "https://static-cdn.jtvnw.net/emoticons/v1/354/2.0" },
                         { code: "5Head", src: "https://cdn.frankerfacez.com/emote/239504/1" },
-                        { code: "KKonaW", src: "https://cdn.betterttv.net/frankerfacez_emote/164480/1" },
+                        { code: "KKonaW", src: "https://cdn.frankerfacez.com/emoticon/229486/1" },
                         { code: "Clap", src: "https://cdn.betterttv.net/emote/55b6f480e66682f576dd94f5/2x" },
                         { code: "D:", src: "https://cdn.betterttv.net/emote/55028cd2135896936880fdd7/1x" }
                     ];
@@ -65,6 +65,7 @@
             chrome.tabs.sendMessage(tab.id, { context: "add" }, function(target) {
                 var src = target.src;
                 var alt = target.alt;
+                alt = alt.trim(); //remove leading and trailing spaces (provisional change for related extension compatability)
                 if (alt.match("^[A-Za-z0-9:_]+$")) {
                     chrome.storage.local.get(['SET'], function(result) { //check for custom emotes
                         var emotes = result.SET;

@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.3.2
+- Added more help info to extension menus.
+- Improved compatibility for relevant sites and extensions.
+- Migrated Chrome/Edge version to Manifest V3.
+
 ### 0.3.1
 - Emote list storage is now local only, to remove the 8kb size limit (lists can still be exported and shared).
 - The emote menu in the Chrome/Edge version has been moved to it's own page, as in the Firefox version.
@@ -9,6 +14,7 @@
 - Images can be added as emotes from the context menu (by right-clicking) on some sites.
 - Tooltip text in popular related extensions will not be replaced with emotes.
 - The emote menu in the Firefox version makes better use of browser window space.
+- The default emote and hostname lists now save on installation via a background script.
 
 ### 0.2.3
 - Users can remove emotes from the list of all emotes, instead of only from search.

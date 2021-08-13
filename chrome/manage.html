@@ -8,15 +8,26 @@
 
 <body>
   <div id="modal" class="modal">
-    <label for="close" class="btn ppl wide">X</label>
+    <label for="hints" class="btn ppl tool l">?</label>
+    <input type="button" id="hints" class="hide">
+    <label for="close" class="btn ppl tool r">X</label>
     <input type="button" id="close" class="hide">
     <div class="inner">
-      <label for="import" class="btn ppl">Import Set</label>
-      <input type="file" id="import" class="hide" accept=".emotes">
+      <ul class="help hide">
+        <li>Press <span class="hl">Export Set</span> below to save your current emote set as a file.</li>
+        <li>Press <span class="hl">Import Set</span> to use an emote set file saved from this menu.</li>
+      </ul>
       <label for="export" class="btn ppl">Export Set</label>
       <input type="button" id="export" class="hide">
+      <label for="import" class="btn ppl">Import Set</label>
+      <input type="file" id="import" class="hide" accept=".emotes">
       <div id="feedback1" class="feedback"></div>
       <div class="rule"></div>
+      <ul class="help hide">
+        <li>Press <span class="hl">Add/Search</span> to check if an emote is included in your current set.</li>
+        <li>If a unique code and an image link are given, the emote will be added.</li>
+        <li>Emotes can be removed/replaced from search, or the <span class="hl">See All</span> menu below.</li>
+      </ul>
       <label for="add" class="btn ppl">Add/Search</label>
       <input type="button" id="add" class="hide">
       <div class="textform">
